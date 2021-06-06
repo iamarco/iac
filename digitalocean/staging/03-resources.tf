@@ -1,9 +1,15 @@
+#Aqui va el tag
+resource "digitalocean_tag" "foobar" {
+  name = "Development"
+}
+
 resource "digitalocean_droplet" "www" {
     image = "ubuntu-18-04-x64"
-    name = "www"
+    name = "www" #Aqui va el nombre de la maquina
     region = "nyc1"
     size = "s-1vcpu-1gb"
     private_networking = true
+    tags = [digitalocean_tag.foobar.id]
     ssh_keys = [
       data.digitalocean_ssh_key.do_ssh_key.id
     ]
@@ -18,7 +24,7 @@ resource "digitalocean_droplet" "www" {
     provisioner "remote-exec" {
         inline = [
             "export PATH=$PATH:/usr/bin",
-            # install nginx
+            # Instalando nginx
             "sudo apt-get update",
             "sudo apt-get -y install nginx"
         ]
